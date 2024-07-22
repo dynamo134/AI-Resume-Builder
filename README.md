@@ -10,7 +10,7 @@ AI Resume Builder is a sophisticated web application that leverages artificial i
 
 ## Demo Video
 
-Watch a demonstration of the application on [YouTube](https://youtu.be/IBdpMBvtZhU)
+<!-- Watch a demonstration of the application on [YouTube]() -->
 
 Explore a live demo of the application [here](https://main--ai-resume-builder-07.netlify.app/)
 

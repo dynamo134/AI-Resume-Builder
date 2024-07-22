@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { getResumeInfo } from "@/Services/GlobalApi";
+import { getResumeData } from "@/Services/resumeAPI";
 import ResumePreview from "../../edit-resume/components/PreviewPage";
 import { useDispatch } from "react-redux";
 import { addResumeData } from "@/features/resume/resumeFeatures";
@@ -17,9 +17,9 @@ function ViewResume() {
     fetchResumeInfo();
   }, []);
   const fetchResumeInfo = async () => {
-    const response = await getResumeInfo(resume_id);
-    // console.log(response.data.attributes);
-    dispatch(addResumeData(response.data.attributes));
+    const response = await getResumeData(resume_id);
+    // console.log(response.data);
+    dispatch(addResumeData(response.data));
   };
 
   const HandleDownload = () => {

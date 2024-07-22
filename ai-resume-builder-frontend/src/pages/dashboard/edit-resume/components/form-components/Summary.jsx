@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Brain, LoaderCircle } from "lucide-react";
+import { Sparkles, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addResumeData } from "@/features/resume/resumeFeatures";
 import { useParams } from "react-router-dom";
-import { updateResumeData } from "@/Services/GlobalApi";
 import { toast } from "sonner";
 import { AIChatSession } from "@/Services/AiModel";
+import { updateThisResume } from "@/Services/resumeAPI";
 
 const prompt =
   "Job Title: {jobTitle} , Depends on job title give me list of  summery for 3 experience level, Mid Level and Freasher level in 3 -4 lines in array format, With summery and experience_level Field in JSON Format";
@@ -33,19 +33,17 @@ function Summary({ resumeInfo, enanbledNext, enanbledPrev }) {
   const onSave = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Summary", summary);
+    console.log("Started Saving Summary");
     const data = {
       data: { summary },
     };
     if (resume_id) {
-      updateResumeData(resume_id, data)
+      updateThisResume(resume_id, data)
         .then((data) => {
-          console.log("Resume Updated", data);
           toast("Resume Updated", "success");
         })
         .catch((error) => {
-          console.error("Error updating resume", error);
-          toast("Error updating resume", "error");
+          toast("Error updating resume", `${error.message}`);
         })
         .finally(() => {
           enanbledNext(true);
@@ -67,13 +65,24 @@ function Summary({ resumeInfo, enanbledNext, enanbledPrev }) {
 
   const GenerateSummeryFromAI = async () => {
     setLoading(true);
+    console.log("Generate Summery From AI for", resumeInfo?.jobTitle);
+    if (!resumeInfo?.jobTitle) {
+      toast("Please Add Job Title");
+      setLoading(false);
+      return;
+    }
     const PROMPT = prompt.replace("{jobTitle}", resumeInfo?.jobTitle);
-    console.log(PROMPT);
-    const result = await AIChatSession.sendMessage(PROMPT);
-    console.log(JSON.parse(result.response.text()));
-
-    setAiGenerateSummeryList(JSON.parse(result.response.text()));
-    setLoading(false);
+    try {
+      const result = await AIChatSession.sendMessage(PROMPT);
+      console.log(JSON.parse(result.response.text()));
+      setAiGenerateSummeryList(JSON.parse(result.response.text()));
+      toast("Summery Generated", "success");
+    } catch (error) {
+      console.log(error);
+      toast("${error.message}", `${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -92,7 +101,7 @@ function Summary({ resumeInfo, enanbledNext, enanbledPrev }) {
               size="sm"
               className="border-primary text-primary flex gap-2"
             >
-              <Brain className="h-4 w-4" /> Generate from AI
+              <Sparkles className="h-4 w-4" /> Generate from AI
             </Button>
           </div>
           <Textarea
@@ -116,7 +125,11 @@ function Summary({ resumeInfo, enanbledNext, enanbledPrev }) {
           {aiGeneratedSummeryList?.map((item, index) => (
             <div
               key={index}
-              onClick={() => setSummery(item?.summary)}
+              onClick={() => {
+                enanbledNext(false);
+                enanbledPrev(false);
+                setSummery(item?.summary);
+              }}
               className="p-5 shadow-lg my-4 rounded-lg cursor-pointer"
             >
               <h2 className="font-bold my-1 text-primary">

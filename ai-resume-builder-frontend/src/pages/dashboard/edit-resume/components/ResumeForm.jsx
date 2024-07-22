@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addResumeData } from "@/features/resume/resumeFeatures";
 import { Button } from "@/components/ui/button";
-import data from "../../../../../data/dummy";
 import PersonalDetails from "./form-components/PersonalDetails";
 import Summary from "./form-components/Summary";
 import Experience from "./form-components/Experience";
 import Education from "./form-components/Education";
 import Skills from "./form-components/Skills";
 import Project from "./form-components/Project";
-import { ArrowLeft, ArrowRight, Home, HomeIcon, Palette } from "lucide-react";
+import { ArrowLeft, ArrowRight, HomeIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import ThemeColor from "./ThemeColor";
 
 function ResumeForm() {
-  const dispatch = useDispatch();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [enanbledNext, setEnabledNext] = useState(true);
   const [enanbledPrev, setEnabledPrev] = useState(true);

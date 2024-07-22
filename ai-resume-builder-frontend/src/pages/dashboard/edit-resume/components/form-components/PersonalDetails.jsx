@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { addResumeData } from "@/features/resume/resumeFeatures";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
-import { updateResumeData } from "@/Services/GlobalApi";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
+import { updateThisResume } from "@/Services/resumeAPI";
 
 function PersonalDetails({ resumeInfo, enanbledNext }) {
   const { resume_id } = useParams();
@@ -20,7 +20,6 @@ function PersonalDetails({ resumeInfo, enanbledNext }) {
     phone: resumeInfo?.phone || "",
     email: resumeInfo?.email || "",
   });
-
 
   const handleInputChange = (e) => {
     enanbledNext(false);
@@ -36,23 +35,32 @@ function PersonalDetails({ resumeInfo, enanbledNext }) {
     });
   };
 
-  const onSave = (e) => {
+  const onSave = async (e) => {
     setLoading(true);
     e.preventDefault();
+    console.log("Personal Details Save Started");
     const data = {
-      data: formData,
+      data: {
+        firstName: e.target.firstName.value,
+        lastName: e.target.lastName.value,
+        jobTitle: e.target.jobTitle.value,
+        address: e.target.address.value,
+        phone: e.target.phone.value,
+        email: e.target.email.value,
+      },
     };
     if (resume_id) {
-      updateResumeData(resume_id, data)
-        .then((data) => {
-          console.log("Resume Updated", data);
-          toast("Resume Updated", "success");
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      try {
+        const response = await updateThisResume(resume_id, data);
+        toast("Resume Updated", "success");
+      } catch (error) {
+        toast(error.message, `failed`);
+        console.log(error.message);
+      } finally {
+        enanbledNext(true);
+        setLoading(false);
+      }
     }
-    enanbledNext(true);
   };
 
   return (

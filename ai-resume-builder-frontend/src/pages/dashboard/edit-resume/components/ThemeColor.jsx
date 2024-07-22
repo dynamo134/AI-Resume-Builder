@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { addResumeData } from "@/features/resume/resumeFeatures";
 import { updateResumeData } from "@/Services/GlobalApi";
+import { updateThisResume } from "@/Services/resumeAPI";
 
 function ThemeColor({ resumeInfo }) {
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ function ThemeColor({ resumeInfo }) {
         themeColor: color,
       },
     };
-    await updateResumeData(resume_id, data)
+    await updateThisResume(resume_id, data)
       .then(() => {
         toast.success("Theme Color Updated");
       })

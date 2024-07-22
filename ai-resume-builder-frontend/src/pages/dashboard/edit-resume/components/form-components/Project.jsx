@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import { addResumeData } from "@/features/resume/resumeFeatures";
 import { toast } from "sonner";
 import { useParams } from "react-router-dom";
-import { updateResumeData } from "@/Services/GlobalApi";
 import { LoaderCircle } from "lucide-react";
+import { updateThisResume } from "@/Services/resumeAPI";
 
 const formFields = {
   projectName: "",
-  techStack: [],
+  techStack: "",
   projectSummary: "",
 };
 function Project({ resumeInfo, setEnabledNext, setEnabledPrev }) {
@@ -69,10 +69,13 @@ function Project({ resumeInfo, setEnabledNext, setEnabledPrev }) {
       },
     };
     if (resume_id) {
-      updateResumeData(resume_id, data)
+      console.log("Started Updating Project");
+      updateThisResume(resume_id, data)
         .then((data) => {
-          console.log("Resume Projects Updated", data);
           toast("Resume Updated", "success");
+        })
+        .catch((error) => {
+          toast("Error updating resume", `${error.message}`);
         })
         .finally(() => {
           setEnabledNext(true);

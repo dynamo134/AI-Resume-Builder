@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { addResumeData } from "@/features/resume/resumeFeatures";
 import { useParams } from "react-router-dom";
 import { updateResumeData } from "@/Services/GlobalApi";
+import { updateThisResume } from "@/Services/resumeAPI";
 import { toast } from "sonner";
 
 const formFields = {
@@ -31,12 +32,9 @@ function Experience({ resumeInfo, enanbledNext, enanbledPrev }) {
   useEffect(() => {
     try {
       dispatch(addResumeData({ ...resumeInfo, experience: experienceList }));
-      console.log("experienceList", experienceList);
     } catch (error) {
-      console.log("error in experience context update", error);
+      console.log("error in experience context update", error.message);
     }
-
-    console.log(experienceList);
   }, [experienceList]);
 
   const addExperience = () => {
@@ -69,7 +67,6 @@ function Experience({ resumeInfo, enanbledNext, enanbledPrev }) {
   };
 
   const handleRichTextEditor = (value, name, index) => {
-    console.log("From Experience HandleRichText", value);
     const list = [...experienceList];
     const newListData = {
       ...list[index],
@@ -87,10 +84,13 @@ function Experience({ resumeInfo, enanbledNext, enanbledPrev }) {
       },
     };
     if (resume_id) {
-      updateResumeData(resume_id, data)
+      console.log("Started Updating Experience");
+      updateThisResume(resume_id, data)
         .then((data) => {
-          console.log("Resume Experience Updated", data);
           toast("Resume Updated", "success");
+        })
+        .catch((error) => {
+          toast("Error updating resume", `${error.message}`);
         })
         .finally(() => {
           enanbledNext(true);

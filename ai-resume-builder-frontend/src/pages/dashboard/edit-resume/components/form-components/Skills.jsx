@@ -9,6 +9,7 @@ import { addResumeData } from "@/features/resume/resumeFeatures";
 import { updateResumeData } from "@/Services/GlobalApi";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { updateThisResume } from "@/Services/resumeAPI";
 
 function Skills({ resumeInfo, enanbledNext }) {
   const [loading, setLoading] = React.useState(false);
@@ -29,8 +30,6 @@ function Skills({ resumeInfo, enanbledNext }) {
     } catch (error) {
       console.log("error in experience context update", error);
     }
-    console.log("Printing from Skills using redux", resumeInfo?.Skills);
-    console.log("Printing from Skills", skillsList);
   }, [skillsList]);
 
   const AddNewSkills = () => {
@@ -64,10 +63,13 @@ function Skills({ resumeInfo, enanbledNext }) {
     };
 
     if (resume_id) {
-      updateResumeData(resume_id, data)
+      console.log("Started Updating Skills");
+      updateThisResume(resume_id, data)
         .then((data) => {
-          console.log("Resume Skills Updated", data);
           toast("Resume Updated", "success");
+        })
+        .catch((error) => {
+          toast("Error updating resume", `${error.message}`);
         })
         .finally(() => {
           setLoading(false);

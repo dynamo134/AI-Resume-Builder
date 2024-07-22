@@ -10,7 +10,7 @@ import ProjectPreview from "./preview-components/ProjectPreview";
 function PreviewPage() {
   const resumeData = useSelector((state) => state.editResume.resumeData);
   useEffect(() => {
-    console.log("PreviewPage rendered ",resumeData);
+    console.log("PreviewPage rendered ");
   }, [resumeData]);
   return (
     <div

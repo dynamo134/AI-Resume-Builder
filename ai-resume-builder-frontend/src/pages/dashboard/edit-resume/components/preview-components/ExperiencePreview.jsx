@@ -1,7 +1,6 @@
 import React from "react";
 
 function ExperiencePreview({ resumeInfo }) {
-  console.log("ExperiencePreview rendered", resumeInfo?.experience);
   return (
     <div className="my-6">
       {resumeInfo?.experience.length > 0 && (

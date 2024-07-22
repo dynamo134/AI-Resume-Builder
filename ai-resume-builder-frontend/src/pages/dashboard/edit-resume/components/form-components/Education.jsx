@@ -8,6 +8,7 @@ import { addResumeData } from "@/features/resume/resumeFeatures";
 import { useParams } from "react-router-dom";
 import { updateResumeData } from "@/Services/GlobalApi";
 import { toast } from "sonner";
+import { updateThisResume } from "@/Services/resumeAPI";
 
 const formFields = {
   universityName: "",
@@ -40,7 +41,7 @@ function Education({ resumeInfo, enanbledNext }) {
   };
 
   const onSave = () => {
-    if(educationalList.length === 0) {
+    if (educationalList.length === 0) {
       return toast("Please add atleast one education", "error");
     }
     setLoading(true);
@@ -50,10 +51,13 @@ function Education({ resumeInfo, enanbledNext }) {
       },
     };
     if (resume_id) {
-      updateResumeData(resume_id, data)
+      console.log("Started Updating Education");
+      updateThisResume(resume_id, data)
         .then((data) => {
-          console.log("Resume Education Updated", data);
           toast("Resume Updated", "success");
+        })
+        .catch((error) => {
+          toast("Error updating resume", `${error.message}`);
         })
         .finally(() => {
           setLoading(false);

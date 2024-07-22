@@ -26,6 +26,7 @@ function AddResume() {
     setLoading(true);
     if (resumetitle === "")
       return console.log("Please add a title to your resume");
+    //To create a unique user id use uuidv4
     const resumeId = uuidv4();
     const data = {
       data: {
@@ -69,9 +70,11 @@ function AddResume() {
               />
             </DialogDescription>
             <div className="gap-2 flex justify-end">
+
               <Button variant="ghost" onClick={() => setOpenDialog(false)}>
                 Cancel
               </Button>
+
               <Button
                 onClick={createResume}
                 disabled={!resumetitle || loading}

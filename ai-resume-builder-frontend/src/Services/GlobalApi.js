@@ -21,6 +21,7 @@ const createNewResume = async (data) => {
   }
 };
 
+//Get all the user Resumes (history) by email
 const getResumes = async (user_email) => {
   try {
     const response = await axiosInstance.get(

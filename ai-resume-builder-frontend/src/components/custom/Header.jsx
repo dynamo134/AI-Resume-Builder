@@ -14,6 +14,7 @@ function Header() {
       className="flex justify-between px-10 py-5 shadow-md items-center"
     >
       <img src={logo} alt="logo" width={100} height={100} />
+      {/* if signIn then show the  dashboard button & user button otherwise navigate to the sign in page */}
       {isSignedIn ? (
         <div className="flex items-center gap-4">
           <Button

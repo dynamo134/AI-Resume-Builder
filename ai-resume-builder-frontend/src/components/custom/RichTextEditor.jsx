@@ -2,25 +2,20 @@ import React, { useEffect, useState } from "react";
 import {
   BtnBold,
   BtnBulletList,
-  BtnClearFormatting,
   BtnItalic,
   BtnLink,
   BtnNumberedList,
-  BtnRedo,
   BtnStrikeThrough,
-  BtnStyles,
   BtnUnderline,
-  BtnUndo,
   Editor,
   EditorProvider,
-  HtmlButton,
   Separator,
   Toolbar,
 } from "react-simple-wysiwyg";
 import { AIChatSession } from "@/Services/AiModel";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { Brain, LoaderCircle } from "lucide-react";
+import { Sparkles, LoaderCircle } from "lucide-react";
 
 const PROMPT = `Create a JSON object with the following fields:
     "position_Title": A string representing the job title.
@@ -75,7 +70,7 @@ function RichTextEditor({ onRichTextEditorChange, index, resumeInfo }) {
             <LoaderCircle className="animate-spin" />
           ) : (
             <>
-              <Brain className="h-4 w-4" /> Generate from AI
+              <Sparkles className="h-4 w-4" /> Generate from AI
             </>
           )}
         </Button>

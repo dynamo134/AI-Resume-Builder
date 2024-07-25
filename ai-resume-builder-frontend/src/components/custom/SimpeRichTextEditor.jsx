@@ -2,18 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   BtnBold,
   BtnBulletList,
-  BtnClearFormatting,
   BtnItalic,
   BtnLink,
   BtnNumberedList,
-  BtnRedo,
   BtnStrikeThrough,
-  BtnStyles,
   BtnUnderline,
-  BtnUndo,
   Editor,
   EditorProvider,
-  HtmlButton,
   Separator,
   Toolbar,
 } from "react-simple-wysiwyg";
@@ -29,7 +24,9 @@ const PROMPT = `Create a JSON object with the following fields:
 projectName-"{projectName}"
 techStack-"{techStack}"`;
 function SimpeRichTextEditor({ index, onRichTextEditorChange, resumeInfo }) {
-  const [value, setValue] = useState(resumeInfo?.projects[index]?.projectSummary || "");
+  const [value, setValue] = useState(
+    resumeInfo?.projects[index]?.projectSummary || ""
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

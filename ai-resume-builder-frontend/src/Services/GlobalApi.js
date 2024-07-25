@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_KEY } from "@/config/config";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:1337/api/",
+  baseURL: import.meta.env.VITE_BASE_URL + "api/",
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${API_KEY}`,
@@ -21,7 +21,6 @@ const createNewResume = async (data) => {
   }
 };
 
-//Get all the user Resumes (history) by email
 const getResumes = async (user_email) => {
   try {
     const response = await axiosInstance.get(
@@ -67,4 +66,10 @@ const deleteResume = async (id) => {
   }
 };
 
-export { createNewResume, getResumes, updateResumeData, getResumeInfo,deleteResume };
+export {
+  createNewResume,
+  getResumes,
+  updateResumeData,
+  getResumeInfo,
+  deleteResume,
+};
